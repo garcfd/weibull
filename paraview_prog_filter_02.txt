@@ -1,0 +1,56 @@
+# paraview load vtk slice data
+# cell data to point data
+# calculate magU = mag(U)
+# use programmable filter
+# cut and paste this code into the programmable filter
+# set legend to rainbow with range 0-5 and resolution 5 
+#
+
+import numpy as np
+
+import pandas
+import matplotlib.pyplot as plt
+data = pandas.read_csv("wind.dat", header=None)
+wind = data[0]
+
+
+
+
+
+
+
+
+
+input0 = inputs[0]
+numPoints = input0.GetNumberOfPoints()
+magU = input0.PointData["magU"]
+
+# weibull constants
+Pdir = 100  # probability of this wind direction (say 12%)
+wbc  = 6.0  # scale factor
+wbk  = 2.0  # shape factor
+
+corr = 0.58 # terrrain correction factor
+uref = 4.5  # wind bl reference velocity (u0)
+
+# New array for output
+pointArray = np.empty(numPoints,dtype=np.float64)
+
+# loop through magU array and populate pointArray
+for i in range(numPoints):
+    waf = corr*(magU[i]/uref)
+    wlim1 = 5.0/waf  # station speed giving ground speed 5m/sec
+    prob1 = Pdir*math.exp( -((wlim1/wbc)**wbk) ) #EP for 5m/sec
+
+    if prob1 < 2.5:
+        pointArray[i] = 0.5 # blue
+    elif prob1 < 5.0:
+        pointArray[i] = 1.5 # cyan
+    elif prob1 < 10.0:
+        pointArray[i] = 2.5 # green
+    elif prob1 < 20.0:
+        pointArray[i] = 3.5 # yellow
+    else:
+        pointArray[i] = 4.5 # red
+        
+output.PointData.append(pointArray,"EP")
