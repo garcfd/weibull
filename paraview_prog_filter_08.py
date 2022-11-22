@@ -1,9 +1,11 @@
 # paraview load vtk slice data
-# cell data to point data
-# calculate magU = mag(U)
-# use programmable filter
-# paste this code into programmable filter
-# set legend to rainbow with range 0-4
+# results must be height z=1.5m
+# cell data to point data filter
+# use calculator magU = mag(U)
+# select programmable filter...
+# (paste this code into it)
+# set legend blue to red rainbow
+# set legend range (0 to 4)
 
 print('hello')
 
@@ -17,7 +19,7 @@ Pdir = 12.4  # probability of this wind direction (say 12%)
 wbk  = 2.92  # shape factor
 wbc  = 4.94  # scale factor
 loc  = 1.0   # location
-terr = 0.58  # terrain correction factor
+terr = 1.0   # 0.58  # terrain correction factor
 uref = 4.5   # ref velocity (uref) at ref height (zref)
 tiny = 0.01  # to prevent div0 error
 
